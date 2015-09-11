@@ -1,0 +1,55 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/splash_root"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ffb34b" >
+
+    <ImageView
+        android:id="@+id/img_logo"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="120dp"
+        android:background="@drawable/logo" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/img_logo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:text="宝贝卫士"
+        android:textColor="#ffffff"
+        android:textSize="18dp"
+        android:textStyle="bold" >
+    </TextView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="50dip"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="版本号"
+            android:textColor="#fff"
+            android:textSize="12dip"
+            android:typeface="normal" >
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_version"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dip"
+            android:text="1.5.0"
+            android:textColor="#fff"
+            android:textSize="12sp" >
+        </TextView>
+    </LinearLayout>
+
+</RelativeLayout>
