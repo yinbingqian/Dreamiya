@@ -1,20 +1,19 @@
 package com.sxit.dreamiya.base.component;
 
-import cn.jpush.android.api.JPushInterface;
-
 import com.sxit.dreamiya.eventbus.EBCache;
-import com.sxit.dreamiya.eventbus.EventCode;
-import com.sxit.dreamiya.eventbus.MEvent;
 import com.sxit.dreamiya.http.RdaResultPack;
-
-import de.greenrobot.event.EventBus;
+import com.sxit.dreamiya.webservice.ISoapService;
+import com.sxit.dreamiya.webservice.SoapService;
 
 import android.app.Activity;
 import android.os.Bundle;
+import cn.jpush.android.api.JPushInterface;
 
 public abstract class BaseActivity extends Activity {
     private boolean isEventBus_HTTP = true;// 是否注册EventBus
-
+    /** soapService **/
+    public ISoapService soapService = new SoapService();
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

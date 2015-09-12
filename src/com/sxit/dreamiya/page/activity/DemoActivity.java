@@ -1,6 +1,7 @@
 package com.sxit.dreamiya.page.activity;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -64,12 +65,7 @@ public class DemoActivity extends BaseActivity {
         }
 
     }
-
-    @Override
-    protected void onPause() {
-        // TODO Auto-generated method stub
-        super.onPause();
-    }
+    
 
     @Override
     protected void onResume() {

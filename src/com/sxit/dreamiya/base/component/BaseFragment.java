@@ -2,12 +2,16 @@ package com.sxit.dreamiya.base.component;
 
 import com.sxit.dreamiya.eventbus.EBCache;
 import com.sxit.dreamiya.http.RdaResultPack;
+import com.sxit.dreamiya.webservice.ISoapService;
+import com.sxit.dreamiya.webservice.SoapService;
 
 import android.app.Fragment;
 import android.os.Bundle;
 
 public abstract class BaseFragment extends Fragment {
     private boolean isEventBus_HTTP = true;// 是否注册EventBus
+    /** soapService **/
+    public ISoapService soapService = new SoapService();
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {

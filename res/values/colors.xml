@@ -36,5 +36,7 @@
     <color name="black_deep">#FF000000</color>
     <color name="btn_answer_pressed">#4ebcd3</color>
     <color name="btn_answer_normal">#2dafa3</color>
+    <!-- progressdialog字体颜色 深灰 -->
+    <color name="progress_msg_text_dark_grey">#333333</color>
 
 </resources>
