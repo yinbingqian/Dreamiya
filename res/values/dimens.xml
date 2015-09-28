@@ -15,5 +15,64 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
      <dimen name="image_thumbnail_size">100dp</dimen>
     <dimen name="image_thumbnail_spacing">1dp</dimen>
+    
+    <dimen name="indicator_right_padding">10dp</dimen>
+    <dimen name="indicator_corner_radius">12dp</dimen>
+    <dimen name="indicator_internal_padding">4dp</dimen>
+    <dimen name="header_footer_left_right_padding">24dp</dimen>
+    <dimen name="header_footer_top_bottom_padding">12dp</dimen>
+    <!-- 固定间距px -->
+    <dimen name="px1">1px</dimen>
+    <dimen name="px2">2px</dimen>
+    <!-- 常用间距 -->
+    <dimen name="normal_height24">24dp</dimen>
+    <dimen name="normal_height32">32dp</dimen>
+    <dimen name="normal_height36">36dp</dimen>
+    <dimen name="normal_height42">42dp</dimen>
+    <dimen name="normal_height48">48dp</dimen>
+    <dimen name="normal_height54">54dp</dimen>
+    <dimen name="normal_height64">64dp</dimen>
+    <dimen name="normal_height72">72dp</dimen>
+    <dimen name="normal_height120">120dp</dimen>
+    <!-- 通用间距 -->
+    <dimen name="marging1">1dp</dimen>
+    <dimen name="marging2">2dp</dimen>
+    <dimen name="marging3">3dp</dimen>
+    <dimen name="marging4">4dp</dimen>
+    <dimen name="marging5">5dp</dimen>
+    <dimen name="marging6">6dp</dimen>
+    <dimen name="marging7">7dp</dimen>
+    <dimen name="marging8">8dp</dimen>
+    <dimen name="marging9">9dp</dimen>
+    <dimen name="marging10">10dp</dimen>
+    <dimen name="marging11">11dp</dimen>
+    <dimen name="marging12">12dp</dimen>
+    <dimen name="marging13">13dp</dimen>
+    <dimen name="marging14">14dp</dimen>
+    <dimen name="marging15">15dp</dimen>
+    <dimen name="marging16">16dp</dimen>
+    <dimen name="marging17">17dp</dimen>
+    <dimen name="marging18">18dp</dimen>
+    <dimen name="marging19">19dp</dimen>
+    <dimen name="marging20">20dp</dimen>
+    <!-- 文字大小 -->
+    <dimen name="textsize13">13sp</dimen>
+    <dimen name="textsize14">14sp</dimen>
+    <dimen name="textsize15">15sp</dimen>
+    <dimen name="textsize16">16sp</dimen>
+    <dimen name="textsize17">17sp</dimen>
+    <dimen name="textsize18">18sp</dimen>
+    <dimen name="textsize19">19sp</dimen>
+    <dimen name="textsize20">20sp</dimen>
+    <dimen name="textsize21">21sp</dimen>
+    <dimen name="textsize22">22sp</dimen>
+    <dimen name="textsize23">23sp</dimen>
+    <dimen name="textsize24">24sp</dimen>
+    <dimen name="textsize25">25sp</dimen>
+    <dimen name="textsize26">26sp</dimen>
+    <dimen name="textsize27">27sp</dimen>
+    <dimen name="textsize28">28sp</dimen>
+    <dimen name="textsize29">29sp</dimen>
+    <dimen name="textsize30">30sp</dimen>
 
 </resources>

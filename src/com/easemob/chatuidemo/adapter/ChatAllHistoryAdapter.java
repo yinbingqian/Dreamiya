@@ -21,6 +21,7 @@ import java.util.Map;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +29,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TextView.BufferType;
@@ -44,7 +46,9 @@ import com.easemob.chat.TextMessageBody;
 import com.easemob.chat.EMConversation.EMConversationType;
 import com.easemob.chatuidemo.Constant;
 import com.easemob.chatuidemo.DemoHXSDKHelper;
+import com.easemob.chatuidemo.activity.SplashActivity;
 import com.sxit.dreamiya.R;
+import com.sxit.dreamiya.common.Instance;
 import com.easemob.chatuidemo.domain.RobotUser;
 import com.easemob.chatuidemo.utils.DateUtils;
 import com.easemob.chatuidemo.utils.SmileUtils;
@@ -63,13 +67,17 @@ public class ChatAllHistoryAdapter extends ArrayAdapter<EMConversation> {
 	private List<EMConversation> copyConversationList;
 	private ConversationFilter conversationFilter;
     private boolean notiyfyByFilter;
+    Context mContext;
+    ListView listview;
 
-	public ChatAllHistoryAdapter(Context context, int textViewResourceId, List<EMConversation> objects) {
+	public ChatAllHistoryAdapter(Context context, int textViewResourceId, List<EMConversation> objects, ListView _listview) {
 		super(context, textViewResourceId, objects);
 		this.conversationList = objects;
 		copyConversationList = new ArrayList<EMConversation>();
 		copyConversationList.addAll(objects);
 		inflater = LayoutInflater.from(context);
+        listview = _listview;
+        mContext = context;
 	}
 
 	@Override
@@ -97,6 +105,18 @@ public class ChatAllHistoryAdapter extends ArrayAdapter<EMConversation> {
 
 		// 获取与此用户/群组的会话
 		EMConversation conversation = getItem(position);
+		
+		// 获取用户username或者群组groupid
+        String name = conversation.getLastMessage().getStringAttribute("name", "");
+        String name_local = SplashActivity.userinfo.getRealName();
+        String headpic = "";
+        if(name.equals(name_local)){
+//            holder.name.setText(conversation.getLastMessage().getStringAttribute("toname", ""));
+          headpic = conversation.getLastMessage().getStringAttribute("topic", "");
+        }else{
+//            holder.name.setText(conversation.getLastMessage().getStringAttribute("name", ""));
+          headpic = conversation.getLastMessage().getStringAttribute("pic", "");
+        }
 		// 获取用户username或者群组groupid
 		String username = conversation.getUserName();
 		if (conversation.getType() == EMConversationType.GroupChat) {
@@ -109,24 +129,35 @@ public class ChatAllHistoryAdapter extends ArrayAdapter<EMConversation> {
             EMChatRoom room = EMChatManager.getInstance().getChatRoom(username);
             holder.name.setText(room != null && !TextUtils.isEmpty(room.getName()) ? room.getName() : username);
 		}else {
-		    UserUtils.setUserAvatar(getContext(), username, holder.avatar);
+	        
+//		    UserUtils.setUserAvatar(getContext(), username, holder.avatar);
+		    Instance.imageLoader.displayImage(headpic, holder.avatar, Instance.user_options);
 			if (username.equals(Constant.GROUP_USERNAME)) {
 				holder.name.setText("群聊");
 
 			} else if (username.equals(Constant.NEW_FRIENDS_USERNAME)) {
 				holder.name.setText("申请与通知");
 			}
+			
 			Map<String,RobotUser> robotMap=((DemoHXSDKHelper)HXSDKHelper.getInstance()).getRobotList();
-			if(robotMap!=null&&robotMap.containsKey(username)){
-				String nick = robotMap.get(username).getNick();
+			if(robotMap!=null&&robotMap.containsKey(name)){
+				String nick = robotMap.get(name).getNick();
 				if(!TextUtils.isEmpty(nick)){
 					holder.name.setText(nick);
 				}else{
-					holder.name.setText(username);
+					holder.name.setText(name);
 				}
 			}else{
-				holder.name.setText(username);
+				holder.name.setText(name);
 			}
+			
+			if(name.equals(name_local)){
+	            holder.name.setText(conversation.getLastMessage().getStringAttribute("toname", ""));
+//	            headpic = conversation.getLastMessage().getStringAttribute("topic", "");
+	        }else{
+	            holder.name.setText(conversation.getLastMessage().getStringAttribute("name", ""));
+//	            headpic = conversation.getLastMessage().getStringAttribute("pic", "");
+	        }
 		}
 
 		if (conversation.getUnreadMsgCount() > 0) {

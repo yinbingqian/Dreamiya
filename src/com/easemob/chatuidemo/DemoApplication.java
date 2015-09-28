@@ -17,19 +17,23 @@ import java.util.Map;
 
 import android.app.Application;
 import android.content.Context;
-
+import android.content.res.Resources;
 import cn.jpush.android.api.JPushInterface;
 
 import com.easemob.EMCallBack;
 import com.easemob.chatuidemo.domain.User;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 public class DemoApplication extends Application {
+    public final static String TAG = "VLC/VLCApplication";
 
 	public static Context applicationContext;
 	private static DemoApplication instance;
 	// login user name
 	public final String PREF_USERNAME = "username";
-	
+
+    public final static String SLEEP_INTENT = "org.videolan.vlc.SleepIntent";
 	/**
 	 * 当前用户nickname,为了苹果推送不是userid而是昵称
 	 */
@@ -41,6 +45,10 @@ public class DemoApplication extends Application {
 		super.onCreate();
         applicationContext = this;
         instance = this;
+        
+        ImageLoaderConfiguration configuration = ImageLoaderConfiguration.createDefault(this);
+        ImageLoader.getInstance().init(configuration);
+        
         JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
 
@@ -131,4 +139,20 @@ public class DemoApplication extends Application {
 		// 先调用sdk logout，在清理app中自己的数据
 	    hxSDKHelper.logout(emCallBack);
 	}
+	
+	/**
+     * @return the main context of the Application
+     */
+    public static Context getAppContext() {
+        return instance;
+    }
+
+    /**
+     * @return the main resources from the Application
+     */
+    public static Resources getAppResources() {
+        if (instance == null)
+            return null;
+        return instance.getResources();
+    }
 }

@@ -17,7 +17,34 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
+
+import com.easemob.EMCallBack;
+import com.easemob.EMConnectionListener;
+import com.easemob.EMError;
+import com.easemob.EMEventListener;
+import com.easemob.EMNotifierEvent;
+import com.easemob.EMValueCallBack;
+import com.easemob.applib.controller.HXSDKHelper;
+import com.easemob.chat.EMChatManager;
+import com.easemob.chat.EMContactManager;
+import com.easemob.chat.EMConversation;
+import com.easemob.chat.EMConversation.EMConversationType;
+import com.easemob.chat.EMMessage;
+import com.easemob.chatuidemo.Constant;
+import com.easemob.chatuidemo.DemoApplication;
+import com.easemob.chatuidemo.DemoHXSDKHelper;
+import com.easemob.chatuidemo.db.InviteMessgeDao;
+import com.easemob.chatuidemo.db.UserDao;
+import com.easemob.chatuidemo.domain.InviteMessage;
+import com.easemob.chatuidemo.domain.User;
+import com.easemob.util.EMLog;
+import com.easemob.util.HanziToPinyin;
+import com.easemob.util.NetUtils;
+import com.sxit.dreamiya.R;
+import com.sxit.dreamiya.fragment.KinderFragment;
+import com.sxit.dreamiya.fragment.SettingsFragment;
+import com.sxit.dreamiya.fragment.VideoFragment;
+import com.umeng.analytics.MobclickAgent;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -28,49 +55,12 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.easemob.EMCallBack;
-import com.easemob.EMConnectionListener;
-import com.easemob.EMError;
-import com.easemob.EMEventListener;
-import com.easemob.EMGroupChangeListener;
-import com.easemob.EMNotifierEvent;
-import com.easemob.EMValueCallBack;
-import com.easemob.applib.controller.HXSDKHelper;
-import com.easemob.chat.EMChat;
-import com.easemob.chat.EMChatManager;
-import com.easemob.chat.EMContactListener;
-import com.easemob.chat.EMContactManager;
-import com.easemob.chat.EMConversation;
-import com.easemob.chat.EMConversation.EMConversationType;
-import com.easemob.chat.EMGroup;
-import com.easemob.chat.EMGroupManager;
-import com.easemob.chat.EMMessage;
-import com.easemob.chat.EMMessage.ChatType;
-import com.easemob.chat.EMMessage.Type;
-import com.easemob.chat.TextMessageBody;
-import com.easemob.chatuidemo.Constant;
-import com.easemob.chatuidemo.DemoApplication;
-import com.easemob.chatuidemo.DemoHXSDKHelper;
-import com.sxit.dreamiya.R;
-import com.easemob.chatuidemo.db.InviteMessgeDao;
-import com.easemob.chatuidemo.db.UserDao;
-import com.easemob.chatuidemo.domain.InviteMessage;
-import com.easemob.chatuidemo.domain.InviteMessage.InviteMesageStatus;
-import com.easemob.chatuidemo.domain.User;
-import com.easemob.chatuidemo.utils.CommonUtils;
-import com.easemob.util.EMLog;
-import com.easemob.util.HanziToPinyin;
-import com.easemob.util.NetUtils;
-import com.umeng.analytics.MobclickAgent;
 
 public class MainActivity extends BaseActivity implements EMEventListener {
 
@@ -78,10 +68,11 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 	// 未读消息textview
 	private TextView unreadLabel;
 	// 未读通讯录textview
-	private TextView unreadAddressLable;
+//	private TextView unreadAddressLable;
 
 	private Button[] mTabs;
-	private ContactlistFragment contactListFragment;
+	private KinderFragment kinderFragment;
+	private VideoFragment videoFragment;
 	// private ChatHistoryFragment chatHistoryFragment;
 	private ChatAllHistoryFragment chatHistoryFragment;
 	private SettingsFragment settingFragment;
@@ -95,7 +86,8 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 	private boolean isCurrentAccountRemoved = false;
 	
 	private MyConnectionListener connectionListener = null;
-	private MyGroupChangeListener groupChangeListener = null;
+	
+	public static MainActivity instance = null;
 
 	/**
 	 * 检查当前用户是否被删除
@@ -123,6 +115,7 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 			return;
 		}
 		setContentView(R.layout.activity_main);
+		instance = this;
 		initView();
 
 		// MobclickAgent.setDebugMode( true );
@@ -140,30 +133,27 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 		// 这个fragment只显示好友和群组的聊天记录
 		// chatHistoryFragment = new ChatHistoryFragment();
 		// 显示所有人消息记录的fragment
+		kinderFragment = new KinderFragment();
 		chatHistoryFragment = new ChatAllHistoryFragment();
-		contactListFragment = new ContactlistFragment();
+		videoFragment = new VideoFragment();
 		settingFragment = new SettingsFragment();
-		fragments = new Fragment[] { chatHistoryFragment, contactListFragment, settingFragment };
+//		fragments = new Fragment[] { kinderFragment, chatHistoryFragment, contactListFragment, settingFragment };
+        fragments = new Fragment[] { kinderFragment, videoFragment, chatHistoryFragment, settingFragment };
 		// 添加显示第一个fragment
-		getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, chatHistoryFragment)
-				.add(R.id.fragment_container, contactListFragment).hide(contactListFragment).show(chatHistoryFragment)
-				.commit();
-		
+		getSupportFragmentManager().beginTransaction()
+		.add(R.id.fragment_container, kinderFragment)
+		.add(R.id.fragment_container, videoFragment).hide(videoFragment)
+		.add(R.id.fragment_container, chatHistoryFragment).hide(chatHistoryFragment)
+		.add(R.id.fragment_container, settingFragment).hide(settingFragment)
+		.show(kinderFragment).commit();
 		init();
 	}
 
 	private void init() {     
-		// setContactListener监听联系人的变化等
-		EMContactManager.getInstance().setContactListener(new MyContactListener());
 		// 注册一个监听连接状态的listener
 		
 		connectionListener = new MyConnectionListener();
 		EMChatManager.getInstance().addConnectionListener(connectionListener);
-		
-		groupChangeListener = new MyGroupChangeListener();
-		// 注册群聊相关的listener
-        EMGroupManager.getInstance().addGroupChangeListener(groupChangeListener);
-		
 		
 		//内部测试方法，请忽略
 		registerInternalDebugReceiver();
@@ -315,11 +305,16 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 	 */
 	private void initView() {
 		unreadLabel = (TextView) findViewById(R.id.unread_msg_number);
-		unreadAddressLable = (TextView) findViewById(R.id.unread_address_number);
-		mTabs = new Button[3];
-		mTabs[0] = (Button) findViewById(R.id.btn_conversation);
-		mTabs[1] = (Button) findViewById(R.id.btn_address_list);
-		mTabs[2] = (Button) findViewById(R.id.btn_setting);
+//		unreadAddressLable = (TextView) findViewById(R.id.unread_address_number);
+		mTabs = new Button[4];
+		mTabs[0] = (Button) findViewById(R.id.btn_kinder);
+        mTabs[1] = (Button) findViewById(R.id.btn_video);
+        mTabs[2] = (Button) findViewById(R.id.btn_conversation);
+        mTabs[3] = (Button) findViewById(R.id.btn_setting);
+//		mTabs[0] = (Button) findViewById(R.id.btn_conversation);
+//		mTabs[1] = (Button) findViewById(R.id.btn_address_list);
+//		mTabs[2] = (Button) findViewById(R.id.btn_setting);
+//        mTabs[3] = (Button) findViewById(R.id.btn_setting);
 		// 把第一个tab设为选中状态
 		mTabs[0].setSelected(true);
 
@@ -333,14 +328,17 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 	 */
 	public void onTabClicked(View view) {
 		switch (view.getId()) {
+		case R.id.btn_kinder:
+		    index = 0;
+		    break;
+		case R.id.btn_video:
+		    index = 1;
+		    break;
 		case R.id.btn_conversation:
-			index = 0;
-			break;
-		case R.id.btn_address_list:
-			index = 1;
+			index = 2;
 			break;
 		case R.id.btn_setting:
-			index = 2;
+			index = 3;
 			break;
 		}
 		if (currentTabIndex != index) {
@@ -422,10 +420,6 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 		    EMChatManager.getInstance().removeConnectionListener(connectionListener);
 		}
 		
-		if(groupChangeListener != null){
-		    EMGroupManager.getInstance().removeGroupChangeListener(groupChangeListener);
-		}
-		
 		try {
             unregisterReceiver(internalDebugReceiver);
         } catch (Exception e) {
@@ -446,37 +440,6 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 	}
 
 	/**
-	 * 刷新申请与通知消息数
-	 */
-	public void updateUnreadAddressLable() {
-		runOnUiThread(new Runnable() {
-			public void run() {
-				int count = getUnreadAddressCountTotal();
-				if (count > 0) {
-//					unreadAddressLable.setText(String.valueOf(count));
-					unreadAddressLable.setVisibility(View.VISIBLE);
-				} else {
-					unreadAddressLable.setVisibility(View.INVISIBLE);
-				}
-			}
-		});
-
-	}
-
-	/**
-	 * 获取未读申请与通知消息
-	 * 
-	 * @return
-	 */
-	public int getUnreadAddressCountTotal() {
-		int unreadAddressCountTotal = 0;
-		if (DemoApplication.getInstance().getContactList().get(Constant.NEW_FRIENDS_USERNAME) != null)
-			unreadAddressCountTotal = DemoApplication.getInstance().getContactList().get(Constant.NEW_FRIENDS_USERNAME)
-					.getUnreadMsgCount();
-		return unreadAddressCountTotal;
-	}
-
-	/**
 	 * 获取未读消息数
 	 * 
 	 * @return
@@ -494,110 +457,6 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 
 	private InviteMessgeDao inviteMessgeDao;
 	private UserDao userDao;
-
-	/***
-	 * 好友变化listener
-	 * 
-	 */
-	public class MyContactListener implements EMContactListener {
-
-		@Override
-		public void onContactAdded(List<String> usernameList) {			
-			// 保存增加的联系人
-			Map<String, User> localUsers = DemoApplication.getInstance().getContactList();
-			Map<String, User> toAddUsers = new HashMap<String, User>();
-			for (String username : usernameList) {
-				User user = setUserHead(username);
-				// 添加好友时可能会回调added方法两次
-				if (!localUsers.containsKey(username)) {
-					userDao.saveContact(user);
-				}
-				toAddUsers.put(username, user);
-			}
-			localUsers.putAll(toAddUsers);
-			// 刷新ui
-			if (currentTabIndex == 1)
-				contactListFragment.refresh();
-
-		}
-
-		@Override
-		public void onContactDeleted(final List<String> usernameList) {
-			// 被删除
-			Map<String, User> localUsers = DemoApplication.getInstance().getContactList();
-			for (String username : usernameList) {
-				localUsers.remove(username);
-				userDao.deleteContact(username);
-				inviteMessgeDao.deleteMessage(username);
-			}
-			runOnUiThread(new Runnable() {
-				public void run() {
-					// 如果正在与此用户的聊天页面
-					String st10 = getResources().getString(R.string.have_you_removed);
-					if (ChatActivity.activityInstance != null
-							&& usernameList.contains(ChatActivity.activityInstance.getToChatUsername())) {
-						Toast.makeText(MainActivity.this, ChatActivity.activityInstance.getToChatUsername() + st10, 1)
-								.show();
-						ChatActivity.activityInstance.finish();
-					}
-					updateUnreadLabel();
-					// 刷新ui
-					contactListFragment.refresh();
-					chatHistoryFragment.refresh();
-				}
-			});
-
-		}
-
-		@Override
-		public void onContactInvited(String username, String reason) {
-			
-			// 接到邀请的消息，如果不处理(同意或拒绝)，掉线后，服务器会自动再发过来，所以客户端不需要重复提醒
-			List<InviteMessage> msgs = inviteMessgeDao.getMessagesList();
-
-			for (InviteMessage inviteMessage : msgs) {
-				if (inviteMessage.getGroupId() == null && inviteMessage.getFrom().equals(username)) {
-					inviteMessgeDao.deleteMessage(username);
-				}
-			}
-			// 自己封装的javabean
-			InviteMessage msg = new InviteMessage();
-			msg.setFrom(username);
-			msg.setTime(System.currentTimeMillis());
-			msg.setReason(reason);
-			Log.d(TAG, username + "请求加你为好友,reason: " + reason);
-			// 设置相应status
-			msg.setStatus(InviteMesageStatus.BEINVITEED);
-			notifyNewIviteMessage(msg);
-
-		}
-
-		@Override
-		public void onContactAgreed(String username) {
-			List<InviteMessage> msgs = inviteMessgeDao.getMessagesList();
-			for (InviteMessage inviteMessage : msgs) {
-				if (inviteMessage.getFrom().equals(username)) {
-					return;
-				}
-			}
-			// 自己封装的javabean
-			InviteMessage msg = new InviteMessage();
-			msg.setFrom(username);
-			msg.setTime(System.currentTimeMillis());
-			Log.d(TAG, username + "同意了你的好友请求");
-			msg.setStatus(InviteMesageStatus.BEAGREED);
-			notifyNewIviteMessage(msg);
-
-		}
-
-		@Override
-		public void onContactRefused(String username) {
-			
-			// 参考同意，被邀请实现此功能,demo未实现
-			Log.d(username, username + "拒绝了你的好友请求");
-		}
-
-	}
 
 	/**
 	 * 连接监听listener
@@ -670,150 +529,6 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 		}
 	}
 
-	/**
-	 * MyGroupChangeListener
-	 */
-	public class MyGroupChangeListener implements EMGroupChangeListener {
-
-		@Override
-		public void onInvitationReceived(String groupId, String groupName, String inviter, String reason) {
-			
-			boolean hasGroup = false;
-			for (EMGroup group : EMGroupManager.getInstance().getAllGroups()) {
-				if (group.getGroupId().equals(groupId)) {
-					hasGroup = true;
-					break;
-				}
-			}
-			if (!hasGroup)
-				return;
-
-			// 被邀请
-			String st3 = getResources().getString(R.string.Invite_you_to_join_a_group_chat);
-			EMMessage msg = EMMessage.createReceiveMessage(Type.TXT);
-			msg.setChatType(ChatType.GroupChat);
-			msg.setFrom(inviter);
-			msg.setTo(groupId);
-			msg.setMsgId(UUID.randomUUID().toString());
-			msg.addBody(new TextMessageBody(inviter + " " +st3));
-			// 保存邀请消息
-			EMChatManager.getInstance().saveMessage(msg);
-			// 提醒新消息
-			HXSDKHelper.getInstance().getNotifier().viberateAndPlayTone(msg);
-
-			runOnUiThread(new Runnable() {
-				public void run() {
-					updateUnreadLabel();
-					// 刷新ui
-					if (currentTabIndex == 0)
-						chatHistoryFragment.refresh();
-					if (CommonUtils.getTopActivity(MainActivity.this).equals(GroupsActivity.class.getName())) {
-						GroupsActivity.instance.onResume();
-					}
-				}
-			});
-
-		}
-
-		@Override
-		public void onInvitationAccpted(String groupId, String inviter, String reason) {
-			
-		}
-
-		@Override
-		public void onInvitationDeclined(String groupId, String invitee, String reason) {
-
-		}
-
-		@Override
-		public void onUserRemoved(String groupId, String groupName) {
-						
-			// 提示用户被T了，demo省略此步骤
-			// 刷新ui
-			runOnUiThread(new Runnable() {
-				public void run() {
-					try {
-						updateUnreadLabel();
-						if (currentTabIndex == 0)
-							chatHistoryFragment.refresh();
-						if (CommonUtils.getTopActivity(MainActivity.this).equals(GroupsActivity.class.getName())) {
-							GroupsActivity.instance.onResume();
-						}
-					} catch (Exception e) {
-						EMLog.e(TAG, "refresh exception " + e.getMessage());
-					}
-				}
-			});
-		}
-
-		@Override
-		public void onGroupDestroy(String groupId, String groupName) {
-			
-			// 群被解散
-			// 提示用户群被解散,demo省略
-			// 刷新ui
-			runOnUiThread(new Runnable() {
-				public void run() {
-					updateUnreadLabel();
-					if (currentTabIndex == 0)
-						chatHistoryFragment.refresh();
-					if (CommonUtils.getTopActivity(MainActivity.this).equals(GroupsActivity.class.getName())) {
-						GroupsActivity.instance.onResume();
-					}
-				}
-			});
-
-		}
-
-		@Override
-		public void onApplicationReceived(String groupId, String groupName, String applyer, String reason) {
-			
-			// 用户申请加入群聊
-			InviteMessage msg = new InviteMessage();
-			msg.setFrom(applyer);
-			msg.setTime(System.currentTimeMillis());
-			msg.setGroupId(groupId);
-			msg.setGroupName(groupName);
-			msg.setReason(reason);
-			Log.d(TAG, applyer + " 申请加入群聊：" + groupName);
-			msg.setStatus(InviteMesageStatus.BEAPPLYED);
-			notifyNewIviteMessage(msg);
-		}
-
-		@Override
-		public void onApplicationAccept(String groupId, String groupName, String accepter) {
-
-			String st4 = getResources().getString(R.string.Agreed_to_your_group_chat_application);
-			// 加群申请被同意
-			EMMessage msg = EMMessage.createReceiveMessage(Type.TXT);
-			msg.setChatType(ChatType.GroupChat);
-			msg.setFrom(accepter);
-			msg.setTo(groupId);
-			msg.setMsgId(UUID.randomUUID().toString());
-			msg.addBody(new TextMessageBody(accepter + " " +st4));
-			// 保存同意消息
-			EMChatManager.getInstance().saveMessage(msg);
-			// 提醒新消息
-			HXSDKHelper.getInstance().getNotifier().viberateAndPlayTone(msg);
-
-			runOnUiThread(new Runnable() {
-				public void run() {
-					updateUnreadLabel();
-					// 刷新ui
-					if (currentTabIndex == 0)
-						chatHistoryFragment.refresh();
-					if (CommonUtils.getTopActivity(MainActivity.this).equals(GroupsActivity.class.getName())) {
-						GroupsActivity.instance.onResume();
-					}
-				}
-			});
-		}
-
-		@Override
-		public void onApplicationDeclined(String groupId, String groupName, String decliner, String reason) {
-			// 加群申请被拒绝，demo未实现
-		}
-	}
 
 	/**
 	 * 保存提示新消息
@@ -824,12 +539,6 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 		saveInviteMsg(msg);
 		// 提示有新消息
 		HXSDKHelper.getInstance().getNotifier().viberateAndPlayTone(null);
-
-		// 刷新bottom bar消息未读数
-		updateUnreadAddressLable();
-		// 刷新好友页面ui
-		if (currentTabIndex == 1)
-			contactListFragment.refresh();
 	}
 
 	/**
@@ -881,7 +590,6 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 		super.onResume();
 		if (!isConflict && !isCurrentAccountRemoved) {
 			updateUnreadLabel();
-			updateUnreadAddressLable();
 			EMChatManager.getInstance().activityResumed();
 		}
 

@@ -21,6 +21,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.easemob.applib.controller.HXSDKHelper;
+import com.easemob.applib.controller.HXSDKHelper.HXSyncListener;
+import com.easemob.chat.EMContactManager;
+import com.easemob.chatuidemo.Constant;
+import com.easemob.chatuidemo.DemoApplication;
+import com.easemob.chatuidemo.adapter.ContactAdapter;
+import com.easemob.chatuidemo.db.InviteMessgeDao;
+import com.easemob.chatuidemo.db.UserDao;
+import com.easemob.chatuidemo.domain.User;
+import com.easemob.chatuidemo.widget.Sidebar;
+import com.easemob.exceptions.EaseMobException;
+import com.easemob.util.EMLog;
+import com.sxit.dreamiya.R;
+import com.sxit.dreamiya.http.RdaResultPack;
+
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -48,20 +63,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
-
-import com.easemob.applib.controller.HXSDKHelper;
-import com.easemob.applib.controller.HXSDKHelper.HXSyncListener;
-import com.easemob.chat.EMContactManager;
-import com.easemob.chatuidemo.Constant;
-import com.easemob.chatuidemo.DemoApplication;
-import com.sxit.dreamiya.R;
-import com.easemob.chatuidemo.adapter.ContactAdapter;
-import com.easemob.chatuidemo.db.InviteMessgeDao;
-import com.easemob.chatuidemo.db.UserDao;
-import com.easemob.chatuidemo.domain.User;
-import com.easemob.chatuidemo.widget.Sidebar;
-import com.easemob.exceptions.EaseMobException;
-import com.easemob.util.EMLog;
 
 /**
  * 联系人列表页
@@ -130,7 +131,8 @@ public class ContactlistFragment extends Fragment {
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.fragment_contact_list, container, false);
+		return inflater.inflate(R.layout.fragment_video, container, false);
+//		return inflater.inflate(R.layout.fragment_contact_list, container, false);
 	}
 
 	@Override
@@ -472,4 +474,5 @@ public class ContactlistFragment extends Fragment {
 	    }
 	    
 	}
+
 }

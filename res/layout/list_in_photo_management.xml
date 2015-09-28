@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/list_in_journal_layout1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/marging15"
+        android:background="@drawable/aswers_mm_listitem"
+        android:orientation="vertical"
+        android:padding="@dimen/marging10" >
+
+        <RelativeLayout
+            android:id="@+id/photo_img_layout"
+            android:layout_width="320dp"
+            android:layout_height="160dp"
+            android:layout_gravity="center_horizontal" >
+
+            <ImageView
+                android:id="@+id/list_in_photo_icon"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/kids_photo"
+                android:scaleType="fitXY" />
+
+            
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/list_in_photo_title"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="10dp"
+            android:gravity="left"
+            android:text="相册标题"
+            android:textColor="#525252"
+            android:textSize="17dp" />
+  <RelativeLayout 
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" >
+    <TextView
+            android:id="@+id/list_in_photo_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
+            android:paddingBottom="2dp"
+            android:paddingRight="10dp"
+            android:paddingTop="2dp"
+            android:text="5月30日  下午10:17"
+            android:textColor="#525252"
+            android:textSize="14dp" />
+
+        <Button
+            android:id="@+id/delete_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="15dp"
+            android:layout_alignTop="@+id/list_in_photo_time"
+            android:layout_alignBottom="@+id/list_in_photo_time"
+            android:background="@null"
+            android:text="删除" 
+            android:textColor="#525252"
+            android:textSize="14dp"/>
+        
+</RelativeLayout>
+        
+
+    </LinearLayout>
+
+</LinearLayout>

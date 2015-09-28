@@ -1,5 +1,15 @@
 package com.easemob.chatuidemo.activity;
 
+import java.util.List;
+
+import com.easemob.chat.EMChatManager;
+import com.easemob.chat.EMGroupManager;
+import com.easemob.chatuidemo.DemoHXSDKHelper;
+import com.sxit.dreamiya.R;
+import com.sxit.dreamiya.db.DBHelper;
+import com.sxit.dreamiya.entity.user.UserInfo;
+
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -8,11 +18,6 @@ import android.os.Bundle;
 import android.view.animation.AlphaAnimation;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.easemob.chat.EMChatManager;
-import com.easemob.chat.EMGroupManager;
-import com.easemob.chatuidemo.DemoHXSDKHelper;
-import com.sxit.dreamiya.R;
 
 /**
  * 开屏页
@@ -23,12 +28,15 @@ public class SplashActivity extends BaseActivity {
 	private TextView versionText;
 	
 	private static final int sleepTime = 2000;
+	
+	Context context;
+	public static UserInfo userinfo;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
 		setContentView(R.layout.activity_splash);
 		super.onCreate(arg0);
-
+		context = this;
 		rootLayout = (RelativeLayout) findViewById(R.id.splash_root);
 		versionText = (TextView) findViewById(R.id.tv_version);
 
@@ -61,8 +69,17 @@ public class SplashActivity extends BaseActivity {
 						}
 					}
 					//进入主页面
-					startActivity(new Intent(SplashActivity.this, MainActivity.class));
-					finish();
+					DBHelper dbh = new DBHelper(context);
+					List<UserInfo> user_list = dbh.queryUserInfo();
+					if(user_list.size()>0){					    
+					    userinfo = user_list.get(0);
+					    startActivity(new Intent(SplashActivity.this, MainActivity.class));
+					    finish();
+					}else{
+					    dbh.clearAllUserInfo();
+					    startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+	                    finish();
+					}
 				}else {
 					try {
 						Thread.sleep(sleepTime);

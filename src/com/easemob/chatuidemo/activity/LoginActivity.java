@@ -18,7 +18,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.easemob.EMCallBack;
+import com.easemob.chat.EMChatManager;
+import com.easemob.chat.EMGroupManager;
+import com.easemob.chatuidemo.Constant;
+import com.easemob.chatuidemo.DemoApplication;
+import com.easemob.chatuidemo.DemoHXSDKHelper;
+import com.easemob.chatuidemo.db.UserDao;
+import com.easemob.chatuidemo.domain.User;
+import com.easemob.chatuidemo.utils.CommonUtils;
+import com.sxit.dreamiya.R;
+import com.sxit.dreamiya.db.DBHelper;
+import com.sxit.dreamiya.entity.user.UserInfo;
+import com.sxit.dreamiya.utils.SOAP_UTILS;
+import com.sxit.dreamiya.webservice.SoapRes;
+
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
@@ -30,17 +46,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
-
-import com.easemob.EMCallBack;
-import com.easemob.chat.EMChatManager;
-import com.easemob.chat.EMGroupManager;
-import com.easemob.chatuidemo.Constant;
-import com.easemob.chatuidemo.DemoApplication;
-import com.easemob.chatuidemo.DemoHXSDKHelper;
-import com.sxit.dreamiya.R;
-import com.easemob.chatuidemo.db.UserDao;
-import com.easemob.chatuidemo.domain.User;
-import com.easemob.chatuidemo.utils.CommonUtils;
 
 /**
  * 登陆页面
@@ -58,6 +63,11 @@ public class LoginActivity extends BaseActivity {
 	private String currentUsername;
 	private String currentPassword;
 
+    private DBHelper dbh;
+    Context context;
+    
+    ProgressDialog pd;
+    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -70,7 +80,8 @@ public class LoginActivity extends BaseActivity {
 			return;
 		}
 		setContentView(R.layout.activity_login);
-
+		context = this;
+        dbh = new DBHelper(this);
 		usernameEditText = (EditText) findViewById(R.id.username);
 		passwordEditText = (EditText) findViewById(R.id.password);
 
@@ -119,7 +130,7 @@ public class LoginActivity extends BaseActivity {
 		}
 
 		progressShow = true;
-		final ProgressDialog pd = new ProgressDialog(LoginActivity.this);
+		pd = new ProgressDialog(LoginActivity.this);
 		pd.setCanceledOnTouchOutside(false);
 		pd.setOnCancelListener(new OnCancelListener() {
 
@@ -140,44 +151,10 @@ public class LoginActivity extends BaseActivity {
 				if (!progressShow) {
 					return;
 				}
-				// 登陆成功，保存用户名密码
-				DemoApplication.getInstance().setUserName(currentUsername);
-				DemoApplication.getInstance().setPassword(currentPassword);
-
-				try {
-					// ** 第一次登录或者之前logout后再登录，加载所有本地群和回话
-					// ** manually load all local groups and
-				    EMGroupManager.getInstance().loadAllGroups();
-					EMChatManager.getInstance().loadAllConversations();
-					// 处理好友和群组
-					initializeContacts();
-				} catch (Exception e) {
-					e.printStackTrace();
-					// 取好友或者群聊失败，不让进入主页面
-					runOnUiThread(new Runnable() {
-						public void run() {
-							pd.dismiss();
-							DemoApplication.getInstance().logout(null);
-							Toast.makeText(getApplicationContext(), R.string.login_failure_failed, 1).show();
-						}
-					});
-					return;
-				}
-				// 更新当前用户的nickname 此方法的作用是在ios离线推送时能够显示用户nick
-				boolean updatenick = EMChatManager.getInstance().updateCurrentUserNick(
-						DemoApplication.currentUserNick.trim());
-				if (!updatenick) {
-					Log.e("LoginActivity", "update current user nick fail");
-				}
-				if (!LoginActivity.this.isFinishing() && pd.isShowing()) {
-					pd.dismiss();
-				}
-				// 进入主页面
-				Intent intent = new Intent(LoginActivity.this,
-						MainActivity.class);
-				startActivity(intent);
 				
-				finish();
+				Object[] property_va = { currentUsername, currentPassword };
+	            soapService.userLogin(property_va);
+				
 			}
 
 			@Override
@@ -192,8 +169,10 @@ public class LoginActivity extends BaseActivity {
 				runOnUiThread(new Runnable() {
 					public void run() {
 						pd.dismiss();
-						Toast.makeText(getApplicationContext(), getString(R.string.Login_failed) + message,
-								Toast.LENGTH_SHORT).show();
+//						Toast.makeText(getApplicationContext(), getString(R.string.Login_failed) + message,
+//								Toast.LENGTH_SHORT).show();
+
+                        Toast.makeText(context, "用户名或密码错误", Toast.LENGTH_SHORT).show();
 					}
 				});
 			}
@@ -239,9 +218,9 @@ public class LoginActivity extends BaseActivity {
 	 * 
 	 * @param view
 	 */
-	public void register(View view) {
-		startActivityForResult(new Intent(this, RegisterActivity.class), 0);
-	}
+//	public void register(View view) {
+//		startActivityForResult(new Intent(this, RegisterActivity.class), 0);
+//	}
 
 	@Override
 	protected void onResume() {
@@ -250,4 +229,74 @@ public class LoginActivity extends BaseActivity {
 			return;
 		}
 	}
+
+    @Override
+	public void onEvent(Object obj) {
+	    super.onEvent(obj);
+	    SoapRes res = (SoapRes) obj;
+        if (res.getCode().equals(SOAP_UTILS.METHOD.NEWLOGIN)) {
+            List<UserInfo> list = (ArrayList<UserInfo>)res.getObj();
+            if(list != null){                
+                if(!list.get(0).getUserId().equals("0")){   
+                    SplashActivity.userinfo = list.get(0);
+                    dbh.clearAllUserInfo();
+                    for (int i = 0; i < list.size(); i++) {
+                        list.get(i).setPhone(currentUsername);
+                        dbh.insUserInfo(list.get(i));
+                    }
+                    
+                 // 登陆成功，环信保存用户名密码
+                    DemoApplication.getInstance().setUserName(currentUsername);
+                    DemoApplication.getInstance().setPassword(currentPassword);
+
+                    try {
+                        // ** 第一次登录或者之前logout后再登录，加载所有本地群和回话
+                        // ** manually load all local groups and
+                        EMGroupManager.getInstance().loadAllGroups();
+                        EMChatManager.getInstance().loadAllConversations();
+                        // 处理好友和群组
+                        initializeContacts();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        // 取好友或者群聊失败，不让进入主页面
+                        runOnUiThread(new Runnable() {
+                            public void run() {
+                                pd.dismiss();
+                                DemoApplication.getInstance().logout(null);
+//                                Toast.makeText(getApplicationContext(), R.string.login_failure_failed, 1).show();
+                                Toast.makeText(context, "用户名或密码错误", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        return;
+                    }
+                    // 更新当前用户的nickname 此方法的作用是在ios离线推送时能够显示用户nick
+                    boolean updatenick = EMChatManager.getInstance().updateCurrentUserNick(
+                            DemoApplication.currentUserNick.trim());
+                    if (!updatenick) {
+                        Log.e("LoginActivity", "update current user nick fail");
+                    }
+                    if (!LoginActivity.this.isFinishing() && pd.isShowing()) {
+                        pd.dismiss();
+                    }
+                    // 进入主页面
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    
+                    finish();
+                } else {
+                    Toast.makeText(context, "用户名或密码错误", Toast.LENGTH_SHORT).show();
+                }
+            }
+            Log.d("Login Soap res to LoginActivity: ", res.toString());
+        } 
+    }
+
+    @Override
+    public void onEventMainThread(String method) {
+        // TODO Auto-generated method stub
+        super.onEventMainThread(method);
+        Log.d("onEventMainThread :", "");
+    }
+    
+    
 }

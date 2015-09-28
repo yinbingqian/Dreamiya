@@ -1,389 +1,167 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/common_bg"
+    android:background="#f2f2f2"
     android:orientation="vertical" >
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/height_top_bar"
-        android:background="@color/top_bar_normal_bg"
-        android:gravity="center_vertical" >
+        android:layout_height="50dp"
+        android:background="#ffb34b" >
 
         <TextView
-            android:id="@+id/message_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/set"
-            android:textColor="#fff"
-            android:textSize="18sp" />
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="@string/bottomtitle04"
+            android:textColor="#ffffff"
+            android:textSize="18dp"
+            android:textStyle="bold" />
     </RelativeLayout>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fadingEdge="none" >
+    <RelativeLayout
+        android:id="@+id/mime_layout_01"
+        android:layout_width="fill_parent"
+        android:layout_height="200dp"
+        android:background="@drawable/setting_bg"
+        android:clickable="true" >
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical" >
+        <com.sxit.dreamiya.utils.settingimg.CircularImage
+            android:id="@+id/mime_img_01"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:layout_marginTop="15dp" 
+            android:layout_centerHorizontal="true" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dip"
-                android:layout_marginRight="10dip"
-                android:layout_marginTop="10dip"
-                android:orientation="vertical" >
-                
+        <TextView
+            android:id="@+id/realname"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/mime_img_01"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
+            android:text="王洋"
+            android:textColor="#ffffff"
+            android:textSize="19dp" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="30dip"
-                    android:gravity="bottom|left"
-                    android:paddingLeft="10dip"
-                    android:text="@string/notify"
-                    android:textColor="@color/btn_gray_pressed" />
+        <TextView
+            android:id="@+id/garden_text"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/realname"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="7dp"
+            android:gravity="center_horizontal"
+            android:text="邮电设计院"
+            android:textColor="#ffffff"
+            android:textSize="17dp" />
+    </RelativeLayout>
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="1dip"
-                    android:background="@color/btn_gray_normal" />
-            </LinearLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dip"
+        android:background="@drawable/usermainpage_bg_center"
+        android:orientation="vertical" >
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" >
-
-                <RelativeLayout
-                    android:id="@+id/rl_switch_notification"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dip"
-                    android:background="@drawable/btn_bottom_selector"
-                    android:padding="10dip" >
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:paddingLeft="10dip"
-                        android:text="@string/newnotify"
-                        android:textColor="@android:color/black"
-                        android:textSize="14sp"
-                        android:typeface="serif" />
-
-                    <ImageView
-                        android:id="@+id/iv_switch_open_notification"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:background="@drawable/open_icon"
-                        android:visibility="visible" />
-
-                    <ImageView
-                        android:id="@+id/iv_switch_close_notification"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:background="@drawable/close_icon"
-                        android:visibility="invisible" />
-                </RelativeLayout>
-
-                <TextView
-                    android:id="@+id/textview1"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dip"
-                    android:layout_marginLeft="10dip"
-                    android:layout_marginRight="10dip"
-                    android:background="#E6E6E6" />
-
-                <RelativeLayout
-                    android:id="@+id/rl_switch_sound"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dip"
-                    android:background="@drawable/btn_bottom_selector"
-                    android:padding="10dip" >
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:paddingLeft="10dip"
-                        android:text="@string/voice"
-                        android:textColor="@android:color/black"
-                        android:textSize="14sp"
-                        android:typeface="serif" />
-
-                    <ImageView
-                        android:id="@+id/iv_switch_open_sound"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:background="@drawable/open_icon"
-                        android:visibility="visible" />
-
-                    <ImageView
-                        android:id="@+id/iv_switch_close_sound"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:background="@drawable/close_icon"
-                        android:visibility="invisible" />
-                </RelativeLayout>
-
-                <TextView
-                    android:id="@+id/textview2"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dip"
-                    android:layout_marginLeft="10dip"
-                    android:layout_marginRight="10dip"
-                    android:background="#E6E6E6" />
-
-                <RelativeLayout
-                    android:id="@+id/rl_switch_vibrate"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dip"
-                    android:background="@drawable/btn_bottom_selector"
-                    android:padding="10dip" >
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:paddingLeft="10dip"
-                        android:text="@string/shake"
-                        android:textColor="@android:color/black"
-                        android:textSize="14sp"
-                        android:typeface="serif" />
-
-                    <ImageView
-                        android:id="@+id/iv_switch_open_vibrate"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:background="@drawable/open_icon"
-                        android:visibility="visible" />
-
-                    <ImageView
-                        android:id="@+id/iv_switch_close_vibrate"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:background="@drawable/close_icon"
-                        android:visibility="invisible" />
-                </RelativeLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dip"
-                    android:layout_marginRight="10dip"
-                    android:layout_marginTop="10dip"
-                    android:orientation="vertical" >
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="30dip"
-                        android:gravity="bottom|left"
-                        android:paddingLeft="10dip"
-                        android:text="@string/chatset"
-                        android:textColor="@color/btn_gray_pressed" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="1dip"
-                        android:background="@color/btn_gray_normal" />
-                </LinearLayout>
-
-                <RelativeLayout
-                    android:id="@+id/rl_switch_speaker"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dip"
-                    android:background="@drawable/btn_bottom_selector"
-                    android:padding="10dip" >
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:paddingLeft="10dip"
-                        android:text="@string/yangshengqi"
-                        android:textColor="@android:color/black"
-                        android:textSize="14sp"
-                        android:typeface="serif" />
-
-                    <ImageView
-                        android:id="@+id/iv_switch_open_speaker"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:background="@drawable/open_icon"
-                        android:visibility="visible" />
-
-                    <ImageView
-                        android:id="@+id/iv_switch_close_speaker"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:background="@drawable/close_icon"
-                        android:visibility="invisible" />
-                </RelativeLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dip"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:background="@color/btn_gray_normal" />
-
-                <LinearLayout
-                    android:id="@+id/ll_black_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dip"
-                    android:background="@drawable/btn_bottom_selector"
-                    android:padding="10dip" >
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:paddingLeft="10dip"
-                        android:text="@string/book_black"
-                        android:textColor="@android:color/black"
-                        android:textSize="14sp" />
-                </LinearLayout>
-                
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dip"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:background="@color/btn_gray_normal" />
-                 <LinearLayout
-                     android:id="@+id/ll_diagnose"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dip"
-                    android:background="@drawable/btn_bottom_selector"
-                    android:padding="10dip" >
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:paddingLeft="10dip"
-                        android:text="@string/diagnose"
-                        android:textColor="@android:color/black"
-                        android:textSize="14sp" />
-                </LinearLayout>
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dip"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:background="@color/btn_gray_normal" />
-                 <LinearLayout
-                     android:id="@+id/ll_set_push_nick"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dip"
-                    android:background="@drawable/btn_bottom_selector"
-                    android:padding="10dip" >
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:paddingLeft="10dip"
-                        android:text="@string/push_nick"
-                        android:textColor="@android:color/black"
-                        android:textSize="14sp" />
-                </LinearLayout>
-            </LinearLayout>
+        <RelativeLayout
+            android:id="@+id/mime_layout_04"
+            android:layout_width="fill_parent"
+            android:layout_height="45dp"
+            android:clickable="true" >
 
             <TextView
-                    android:id="@+id/textview4"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dip"
-                    android:layout_marginLeft="10dip"
-                    android:layout_marginRight="10dip"
-                    android:background="#E6E6E6" />
-
-                <RelativeLayout
-                    android:id="@+id/rl_switch_chatroom_owner_leave"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dip"
-                    android:background="@drawable/btn_bottom_selector"
-                    android:padding="10dip" >
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:paddingLeft="10dip"
-                        android:text="@string/chatroom_allow_owner_leave"
-                        android:textColor="@android:color/black"
-                        android:textSize="14sp"
-                        android:typeface="serif" />
-
-                    <ImageView
-                        android:id="@+id/iv_switch_chatroom_owner_leave_allow"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:background="@drawable/open_icon"
-                        android:visibility="visible" />
-
-                    <ImageView
-                        android:id="@+id/iv_switch_chatroom_owner_leave_not_allow"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:background="@drawable/close_icon"
-                        android:visibility="invisible" />
-                </RelativeLayout>
-            <!--
-                 <TextView
-                android:layout_width="match_parent"
-                android:layout_height="1dip"
-                android:layout_marginLeft="10dip"
-                android:layout_marginRight="10dip"
-                android:background="#E6E6E6" />
-            -->
-
-            <LinearLayout
-                android:layout_width="match_parent"
+                android:id="@+id/message_text"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dip"
-                android:background="#ffffff"
-                android:orientation="vertical" >
-                 
-                <Button
-                    android:id="@+id/btn_logout"
-                    android:layout_width="match_parent"
-                    android:layout_height="44dp"
-                    android:layout_marginBottom="12dp"
-                    android:layout_marginLeft="10dip"
-                    android:layout_marginRight="10dip"
-                    android:layout_marginTop="12dp"
-                    android:background="@drawable/btn_style_alert_dialog_special"
-                    android:text="@string/button_logout"
-                    android:textColor="@android:color/white"
-                    android:textSize="18sp" />
-            </LinearLayout>
-        </LinearLayout>
-    </ScrollView>
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="60dp"
+                android:text="新消息设置"
+                android:textColor="#525252"
+                android:textSize="17dp" />
+
+            <ImageView
+                android:id="@+id/row_img_02"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:src="@drawable/message_icon" />
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:background="@drawable/line" />
+
+        <RelativeLayout
+            android:id="@+id/mime_layout_05"
+            android:layout_width="fill_parent"
+            android:layout_height="45dp"
+            android:clickable="true" >
+
+            <TextView
+                android:id="@+id/update_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="60dp"
+                android:text="用户反馈"
+                android:textColor="#525252"
+                android:textSize="17dp" />
+
+            <ImageView
+                android:id="@+id/row_img_03"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:src="@drawable/feedback_icon" />
+        </RelativeLayout>
+         <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:background="@drawable/line" />
+
+        <RelativeLayout
+            android:id="@+id/mime_layout_06"
+            android:layout_width="fill_parent"
+            android:layout_height="45dp"
+            android:clickable="true" >
+
+            <TextView
+                android:id="@+id/reset_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="60dp"
+                android:text="修改密码"
+                android:textColor="#525252"
+                android:textSize="17dp" />
+
+            <ImageView
+                android:id="@+id/row_img_06"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:src="@drawable/password_icon" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_logout"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="10dip"
+        android:layout_marginTop="60dp"
+        android:background="#ffffff"
+        android:text="退出"
+        android:textColor="#F75E5E"
+        android:textSize="16sp" />
 
 </LinearLayout>

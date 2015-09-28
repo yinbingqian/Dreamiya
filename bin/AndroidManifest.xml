@@ -345,6 +345,96 @@
             android:name="com.alipay.sdk.pay.PayDemoActivity3"
             android:theme="@android:style/Theme.Light.NoTitleBar" >
         </activity>
+        
+        <!-- 自定义Activity -->
+        
+        <!-- 自定义联系人列表（配合环信） -->
+        <activity
+            android:name="com.sxit.dreamiya.activity.chat.ContactActivity"
+            android:theme="@android:style/Theme.Light.NoTitleBar" >
+        </activity>
+        
+        <!-- 时刻 实时视频 列表页  -->
+        <activity
+            android:name="com.sxit.dreamiya.activity.video.CameraList"
+            android:theme="@android:style/Theme.Light.NoTitleBar" >
+        </activity>
+        
+        <!-- 幼儿园 资讯 资讯列表页  -->
+        <activity
+            android:name="com.sxit.dreamiya.activity.kinder.NewsActivity"
+            android:theme="@android:style/Theme.Light.NoTitleBar" >
+        </activity>
+        <!-- 幼儿园 资讯 资讯详情页  -->
+        <activity
+            android:name="com.sxit.dreamiya.activity.kinder.NewsInfo_Activity"
+            android:theme="@android:style/Theme.Light.NoTitleBar" >
+        </activity>
+        <!-- 幼儿园相册  相册列表页  -->
+        <activity
+            android:name="com.sxit.dreamiya.activity.kinder.PhotoActivity"
+            android:theme="@android:style/Theme.Light.NoTitleBar" >
+        </activity>
+        <!-- 幼儿园相册  相册详情页  -->
+        <activity
+            android:name="com.sxit.dreamiya.activity.kinder.PhotoInfo_Activity"
+            android:theme="@android:style/Theme.Light.NoTitleBar" >
+        </activity>
+        <!-- 幼儿园相册管理  相册详情页  -->
+        <activity
+            android:name="com.sxit.dreamiya.activity.kinder.PhotoManagementActivity"
+            android:theme="@android:style/Theme.Light.NoTitleBar" >
+        </activity>
+         <!-- 幼儿园视频  视频列表页  -->
+        <activity
+            android:name="com.sxit.dreamiya.activity.kinder.VideoActivity"
+            android:theme="@android:style/Theme.Light.NoTitleBar" >
+        </activity>
+         <!-- 幼儿园视频  视频详情页  -->
+        <activity
+            android:name="com.sxit.dreamiya.activity.kinder.VideoInfo_Activity"
+            android:theme="@android:style/Theme.Light.NoTitleBar" >
+        </activity>
+         <!-- 幼儿园课程  课程列表页  -->
+        <activity
+            android:name="com.sxit.dreamiya.activity.kinder.CourseActivity"
+            android:theme="@android:style/Theme.Light.NoTitleBar" >
+        </activity>
+         <!-- 幼儿园通知  通知列表页  -->
+        <activity
+            android:name="com.sxit.dreamiya.activity.kinder.NoticeActivity"
+            android:theme="@android:style/Theme.Light.NoTitleBar" >
+        </activity>
+         <!-- 幼儿园通知 发布 通知发布列表页  -->
+        <activity
+            android:name="com.sxit.dreamiya.activity.kinder.NoticeManagementActivity"
+            android:theme="@android:style/Theme.Light.NoTitleBar" >
+        </activity>
+         <!-- 幼儿园通知 发布 通知发布页  -->
+        <activity
+            android:name="com.sxit.dreamiya.activity.kinder.NoticeSendActivity"
+            android:theme="@android:style/Theme.Light.NoTitleBar" >
+        </activity>
+         <!-- 设置  用户反馈页  -->
+        <activity
+            android:name="com.sxit.dreamiya.activity.setting.OpinionActivity"
+            android:theme="@android:style/Theme.Light.NoTitleBar" >
+        </activity>
+         <!-- 设置  设置新消息设置页  -->
+        <activity
+            android:name="com.sxit.dreamiya.activity.setting.SettingsActivity"
+            android:theme="@android:style/Theme.Light.NoTitleBar" >
+        </activity>
+         <!-- 设置  设置修改密码页  -->
+        <activity
+            android:name="com.sxit.dreamiya.activity.setting.ResetPasswordActivity"
+            android:theme="@android:style/Theme.Light.NoTitleBar" >
+        </activity>
+         <!-- 设置  设置头像  -->
+        <activity
+            android:name="com.sxit.dreamiya.utils.settingimg.SelectPicActivity"
+            android:theme="@android:style/Theme.Light.NoTitleBar" >
+        </activity>
         <!-- 百度地图所需的service -->
         <service
             android:name="com.baidu.location.f"

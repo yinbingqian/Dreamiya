@@ -6,8 +6,20 @@ import java.util.Comparator;
 import java.util.Hashtable;
 import java.util.List;
 
+import com.easemob.chat.EMChatManager;
+import com.easemob.chat.EMConversation;
+import com.easemob.chat.EMConversation.EMConversationType;
+import com.easemob.chatuidemo.Constant;
+import com.easemob.chatuidemo.DemoApplication;
+import com.easemob.chatuidemo.adapter.ChatAllHistoryAdapter;
+import com.easemob.chatuidemo.db.InviteMessgeDao;
+import com.sxit.dreamiya.R;
+import com.sxit.dreamiya.activity.chat.ContactActivity;
+import com.sxit.dreamiya.utils.SOAP_UTILS;
+
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -27,21 +39,13 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.easemob.chat.EMChatManager;
-import com.easemob.chat.EMConversation;
-import com.easemob.chat.EMConversation.EMConversationType;
-import com.easemob.chatuidemo.Constant;
-import com.easemob.chatuidemo.DemoApplication;
-import com.sxit.dreamiya.R;
-import com.easemob.chatuidemo.adapter.ChatAllHistoryAdapter;
-import com.easemob.chatuidemo.db.InviteMessgeDao;
 
 /**
  * 显示所有会话记录，比较简单的实现，更好的可能是把陌生人存入本地，这样取到的聊天记录是可控的
@@ -55,7 +59,7 @@ public class ChatAllHistoryFragment extends Fragment implements View.OnClickList
 	private EditText query;
 	private ImageButton clearSearch;
 	public RelativeLayout errorItem;
-
+	
 	public TextView errorText;
 	private boolean hidden;
 	private List<EMConversation> conversationList = new ArrayList<EMConversation>();
@@ -76,10 +80,32 @@ public class ChatAllHistoryFragment extends Fragment implements View.OnClickList
 		
 		conversationList.addAll(loadConversationsWithRecentChat());
 		listView = (ListView) getView().findViewById(R.id.list);
-		adapter = new ChatAllHistoryAdapter(getActivity(), 1, conversationList);
+		adapter = new ChatAllHistoryAdapter(getActivity(), 1, conversationList, listView);
 		// 设置adapter
 		listView.setAdapter(adapter);
 				
+		Button group_bt = (Button) getView().findViewById(R.id.group_bt);
+		Button contact_bt = (Button) getView().findViewById(R.id.contact_bt);
+		group_bt.setOnClickListener(new View.OnClickListener() {
+            
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                Intent intent = new Intent();
+                intent.setClass(getActivity(), GroupsActivity.class);
+                startActivity(intent);
+            }
+        });
+		contact_bt.setOnClickListener(new View.OnClickListener() {
+            
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                Intent intent = new Intent();
+                intent.setClass(getActivity(), ContactActivity.class);
+                startActivity(intent);
+            }
+        });
 		
 		final String st2 = getResources().getString(R.string.Cant_chat_with_yourself);
 		listView.setOnItemClickListener(new OnItemClickListener() {
@@ -108,6 +134,27 @@ public class ChatAllHistoryFragment extends Fragment implements View.OnClickList
 				        // it is single chat
                         intent.putExtra("userId", username);
 				    }
+				    
+                    String name = SplashActivity.userinfo.getRealName();
+                    String pic = SplashActivity.userinfo.getHeadPic();
+                    
+                    String conversation_name = conversation.getLastMessage().getStringAttribute("name", "");
+                    String toname = "";
+                    String topic = "";
+                    if(conversation_name.equals(name)){
+                        toname = conversation.getLastMessage().getStringAttribute("toname", "");
+                        topic = conversation.getLastMessage().getStringAttribute("topic", "");
+                    }else{
+                        toname = conversation.getLastMessage().getStringAttribute("name", "");
+                        topic = conversation.getLastMessage().getStringAttribute("pic", "");
+                    }
+                    
+                    intent.putExtra("Realname", toname);
+                    intent.putExtra("name", name);
+                    intent.putExtra("toname", toname);
+                    intent.putExtra("pic", SOAP_UTILS.PIC_FILE + pic);
+                    intent.putExtra("topic", topic);
+				    
 				    startActivity(intent);
 				}
 			}
@@ -298,4 +345,5 @@ public class ChatAllHistoryFragment extends Fragment implements View.OnClickList
     @Override
     public void onClick(View v) {        
     }
+
 }

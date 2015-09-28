@@ -1,0 +1,334 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f8f8f8"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#ffb34b" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="@string/bottomtitle02"
+            android:textColor="#ffffff"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/garden_layout_notice"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:background="@drawable/topbg" >
+
+        <TextView
+            android:id="@+id/notice_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="20dp"
+            android:text="通知：五年级一班家长会在4月23日举行...."
+            android:textColor="#ffffff"
+            android:textSize="15dp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical"
+        tools:ignore="DisableBaselineAlignment" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            tools:ignore="DisableBaselineAlignment" >
+
+            <RelativeLayout
+                android:id="@+id/garden_layout_photo"
+                android:layout_width="1dp"
+                android:layout_height="86dp"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:gravity="center" >
+
+                <ImageView
+                    android:id="@+id/front_img_02"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/iconphoto"
+                    android:gravity="center"
+                    android:scaleType="fitXY" />
+
+                <TextView
+                    android:id="@+id/photo_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/front_img_02"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="7dip"
+                    android:gravity="center"
+                    android:text="@string/titlephoto"
+                    android:textColor="#525252"
+                    android:textSize="14dp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/garden_layout_topic"
+                android:layout_width="1dp"
+                android:layout_height="86dp"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:gravity="center"
+                android:visibility="gone" >
+
+                <ImageView
+                    android:id="@+id/front_img_07"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/icontopic"
+                    android:scaleType="fitXY" />
+
+                <TextView
+                    android:id="@+id/topic_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/front_img_07"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="7dip"
+                    android:gravity="center"
+                    android:text="@string/titletopic"
+                    android:textColor="#525252"
+                    android:textSize="14dp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/garden_layout_food"
+                android:layout_width="1dp"
+                android:layout_height="86dp"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:gravity="center" >
+
+                <ImageView
+                    android:id="@+id/front_img_04"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/iconfood"
+                    android:scaleType="fitXY" />
+
+                <TextView
+                    android:id="@+id/food_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/front_img_04"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="7dip"
+                    android:gravity="center"
+                    android:text="@string/titlefood"
+                    android:textColor="#525252"
+                    android:textSize="14dp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/garden_layout_course"
+                android:layout_width="1dp"
+                android:layout_height="86dp"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:gravity="center" >
+
+                <ImageView
+                    android:id="@+id/front_img_08"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/iconcourse"
+                    android:scaleType="fitXY" />
+
+                <TextView
+                    android:id="@+id/course_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/front_img_08"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="7dip"
+                    android:text="@string/titlecourse"
+                    android:textColor="#525252"
+                    android:textSize="14dp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/garden_layout_chuqin"
+                android:layout_width="1dp"
+                android:layout_height="86dp"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:gravity="center" >
+
+                <ImageView
+                    android:id="@+id/front_img_05"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/iconchuqin"
+                    android:scaleType="fitXY" />
+
+                <TextView
+                    android:id="@+id/chuqin_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/front_img_05"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="7dip"
+                    android:text="@string/titlechuqin"
+                    android:textColor="#525252"
+                    android:textSize="14dp" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            tools:ignore="DisableBaselineAlignment" >
+
+            <RelativeLayout
+                android:id="@+id/garden_layout_news"
+                android:layout_width="1dp"
+                android:layout_height="86dp"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:gravity="center" >
+
+                <ImageView
+                    android:id="@+id/front_img_01"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/iconnews"
+                    android:scaleType="fitXY" />
+
+                <TextView
+                    android:id="@+id/news_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/front_img_01"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="7dip"
+                    android:text="@string/titlenews"
+                    android:textColor="#525252"
+                    android:textSize="14dp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/garden_layout_video"
+                android:layout_width="1dp"
+                android:layout_height="86dp"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:gravity="center" >
+
+                <ImageView
+                    android:id="@+id/front_img_03"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/iconvideo"
+                    android:gravity="center"
+                    android:scaleType="fitXY" />
+
+                <TextView
+                    android:id="@+id/video_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/front_img_03"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="7dip"
+                    android:gravity="center"
+                    android:text="@string/titlevideo"
+                    android:textColor="#525252"
+                    android:textSize="14dp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="1dp"
+                android:layout_height="100dp"
+                android:layout_weight="1" >
+
+                <TextView
+                    android:id="@+id/news_text1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dip"
+                    android:layout_marginTop="7dip"
+                    android:textSize="18sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="1dp"
+                android:layout_height="100dp"
+                android:layout_weight="1" >
+
+                <TextView
+                    android:id="@+id/news_text2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dip"
+                    android:layout_marginTop="7dip"
+                    android:textSize="18sp" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            tools:ignore="DisableBaselineAlignment" >
+
+            <RelativeLayout
+                android:layout_width="1dp"
+                android:layout_height="100dp"
+                android:layout_weight="1" >
+
+                <TextView
+                    android:id="@+id/news_text3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dip"
+                    android:layout_marginTop="7dip"
+                    android:textSize="18sp" />
+            </RelativeLayout>
+
+            
+
+            <RelativeLayout
+                android:layout_width="1dp"
+                android:layout_height="100dp"
+                android:layout_weight="1" >
+
+                <TextView
+                    android:id="@+id/news_text4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dip"
+                    android:layout_marginTop="7dip"
+                    android:textSize="18sp" />
+            </RelativeLayout>
+
+            
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

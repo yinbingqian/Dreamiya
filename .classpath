@@ -21,5 +21,7 @@
 	<classpathentry exported="true" kind="lib" path="libs/umeng-analytics-v5.2.4.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/universal-image-loader-1.9.2-SNAPSHOT-with-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/pinyin4j-2.5.0.jar"/>
+	<classpathentry kind="lib" path="libs/INetSDK.jar"/>
+	<classpathentry kind="lib" path="libs/IPlaySDK.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

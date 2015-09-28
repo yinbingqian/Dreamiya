@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal" >
+
+    <ImageView
+        android:id="@+id/ItemImage"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:paddingLeft="15dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/deviceicon" >
+    </ImageView>
+
+    <TextView
+        android:id="@+id/ItemTitle"
+        style="@style/devListStyle"
+        android:layout_width="fill_parent"
+        android:layout_height="70dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="15dp"
+        android:text="班级"
+        android:textColor="#525252"
+        android:textSize="16dp" >
+    </TextView>
+
+</LinearLayout>

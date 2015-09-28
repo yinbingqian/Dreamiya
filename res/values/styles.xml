@@ -176,5 +176,16 @@
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowNoTitle">true</item>
     </style>
-    
+    <style name="landingStyle">
+        <item name="android:textSize">16dip</item>
+        <item name="android:textColor">#575757</item>
+    </style>
+    <style name="devListStyle">
+        <item name="android:textSize">16dip</item>
+        <item name="android:textColor">#000000</item>
+    </style>
+     <!-- 登录编辑框样式 -->
+    <style name="login_edittext_style" parent="@android:style/Widget.EditText">
+        <item name="android:background">@drawable/edittext_bg</item>
+    </style>
 </resources>

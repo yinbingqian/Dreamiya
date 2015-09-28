@@ -3,6 +3,7 @@ package com.sxit.dreamiya.base.component;
 import com.sxit.dreamiya.eventbus.EBCache;
 import com.sxit.dreamiya.http.RdaResultPack;
 import com.sxit.dreamiya.webservice.ISoapService;
+import com.sxit.dreamiya.webservice.SoapRes;
 import com.sxit.dreamiya.webservice.SoapService;
 
 import android.app.Fragment;
@@ -38,5 +39,13 @@ public abstract class BaseFragment extends Fragment {
      */
     protected void onEventMainThread(String className) {
 
+    }
+    
+    /**
+     * http回调SoapObject
+     * @param obj   
+     */
+    public void onEvent(Object obj) {
+        
     }
 }

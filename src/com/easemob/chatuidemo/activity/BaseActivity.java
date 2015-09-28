@@ -14,19 +14,31 @@
 
 package com.easemob.chatuidemo.activity;
 
+import com.easemob.applib.controller.HXSDKHelper;
+import com.sxit.dreamiya.customview.LoadingPage;
+import com.sxit.dreamiya.utils.EventCache;
+import com.sxit.dreamiya.webservice.ISoapService;
+import com.sxit.dreamiya.webservice.SoapRes;
+import com.sxit.dreamiya.webservice.SoapService;
+import com.umeng.analytics.MobclickAgent;
+
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
-
-import com.easemob.applib.controller.HXSDKHelper;
-import com.easemob.applib.model.HXNotifier;
-import com.umeng.analytics.MobclickAgent;
+import android.view.ViewGroup;
 
 public class BaseActivity extends FragmentActivity {
-
+    /** soapService **/
+    public ISoapService soapService = new SoapService();
+    private LoadingPage loading;
+    
     @Override
     protected void onCreate(Bundle arg0) {
         super.onCreate(arg0);
+        EventCache.commandActivity.unregister(this);
+        EventCache.commandActivity.register(this);
+        EventCache.errorHttp.unregister(this);
+        EventCache.errorHttp.register(this);
     }
 
     @Override
@@ -54,5 +66,37 @@ public class BaseActivity extends FragmentActivity {
      */
     public void back(View view) {
         finish();
+    }
+    
+    /**
+     * 移除 loading
+     */
+    public void removeLoading() {
+        if (loading != null) {
+            ViewGroup parent = (ViewGroup) loading.ll_bg.getParent();
+            parent.removeView(loading.ll_bg);
+            loading = null;
+        }
+    }
+    
+    /**
+     * http回调SoapObject
+     * @param obj   
+     */
+    public void onEvent(Object obj) {
+        SoapRes res = (SoapRes) obj;
+        if (res.getObj() == null && loading != null) {
+            loading.setState(1,res.getCode());
+        }else{
+            removeLoading();
+        }        
+    }
+    
+    /**
+     * http error回调
+     * @param method    方法明名
+     */
+    public void onEventMainThread(String method) {
+        
     }
 }

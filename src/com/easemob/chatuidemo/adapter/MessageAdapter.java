@@ -70,6 +70,7 @@ import com.easemob.chat.VoiceMessageBody;
 import com.easemob.chatuidemo.Constant;
 import com.easemob.chatuidemo.DemoHXSDKHelper;
 import com.sxit.dreamiya.R;
+import com.sxit.dreamiya.common.Instance;
 import com.easemob.chatuidemo.activity.AlertDialog;
 import com.easemob.chatuidemo.activity.BaiduMapActivity;
 import com.easemob.chatuidemo.activity.ChatActivity;
@@ -132,13 +133,21 @@ public class MessageAdapter extends BaseAdapter{
 
 	private Context context;
 
+	//自定义参数
+    String pic;
+    String topic;
+    ListView listView;
+    
 	private Map<String, Timer> timers = new Hashtable<String, Timer>();
 
-	public MessageAdapter(Context context, String username, int chatType) {
+	public MessageAdapter(Context context, String username, int chatType, String _pic, String _topic, ListView _listview) {
 		this.username = username;
 		this.context = context;
 		inflater = LayoutInflater.from(context);
 		activity = (Activity) context;
+        this.pic = _pic;
+        this.topic = _topic;
+        this.listView = _listview;
 		this.conversation = EMChatManager.getInstance().getConversation(username);
 	}
 	
@@ -415,8 +424,18 @@ public class MessageAdapter extends BaseAdapter{
 
 		// 群聊时，显示接收的消息的发送人的名称
 		if ((chatType == ChatType.GroupChat || chatType == chatType.ChatRoom) && message.direct == EMMessage.Direct.RECEIVE){
+		    
+		    String name = "";
+            try {
+                name = message.getStringAttribute("name").toString();
+            } catch (EaseMobException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+		    
 		    //demo里使用username代码nick
-			holder.tv_usernick.setText(message.getFrom());
+			holder.tv_usernick.setText(name);
+//            holder.tv_usernick.setText(message.getFrom());
 		}
 		// 如果是发送的消息并且不是群聊消息，显示已读textview
 		if (!(chatType == ChatType.GroupChat || chatType == chatType.ChatRoom) && message.direct == EMMessage.Direct.SEND) {
@@ -458,7 +477,7 @@ public class MessageAdapter extends BaseAdapter{
 		}
 		
 		//设置用户头像
-		setUserAvatar(message, holder.iv_avatar);
+		setUserAvatar(message, holder.iv_avatar, topic);
 
 		switch (message.getType()) {
 		// 根据消息type显示item
@@ -564,12 +583,28 @@ public class MessageAdapter extends BaseAdapter{
 	 * @param message
 	 * @param imageView
 	 */
-	private void setUserAvatar(EMMessage message, ImageView imageView){
+	private void setUserAvatar(EMMessage message, ImageView imageView, String _topic){
 	    if(message.direct == Direct.SEND){
 	        //显示自己头像
-	        UserUtils.setUserAvatar(context, EMChatManager.getInstance().getCurrentUser(), imageView);
+//	        UserUtils.setUserAvatar(context, EMChatManager.getInstance().getCurrentUser(), imageView);
+
+	        Instance.imageLoader.displayImage(pic, imageView, Instance.user_options);
 	    }else{
-	        UserUtils.setUserAvatar(context, message.getFrom(), imageView);
+//	        UserUtils.setUserAvatar(context, message.getFrom(), imageView);
+	        if(!_topic.equals("")){                
+	            Instance.imageLoader.displayImage(_topic, imageView, Instance.user_options);
+            }else{
+                String _pic = "";
+                try {
+                    _pic = message.getStringAttribute("pic").toString();
+                } catch (EaseMobException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+
+                Instance.imageLoader.displayImage(_pic, imageView, Instance.user_options);
+
+            }
 	    }
 	}
 

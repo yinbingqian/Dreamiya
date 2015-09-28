@@ -21,6 +21,46 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.easemob.EMChatRoomChangeListener;
+import com.easemob.EMError;
+import com.easemob.EMEventListener;
+import com.easemob.EMNotifierEvent;
+import com.easemob.EMValueCallBack;
+import com.easemob.applib.controller.HXSDKHelper;
+import com.easemob.applib.model.GroupRemoveListener;
+import com.easemob.chat.EMChatManager;
+import com.easemob.chat.EMChatRoom;
+import com.easemob.chat.EMContactManager;
+import com.easemob.chat.EMConversation;
+import com.easemob.chat.EMConversation.EMConversationType;
+import com.easemob.chat.EMGroup;
+import com.easemob.chat.EMGroupManager;
+import com.easemob.chat.EMMessage;
+import com.easemob.chat.EMMessage.ChatType;
+import com.easemob.chat.ImageMessageBody;
+import com.easemob.chat.LocationMessageBody;
+import com.easemob.chat.NormalFileMessageBody;
+import com.easemob.chat.TextMessageBody;
+import com.easemob.chat.VideoMessageBody;
+import com.easemob.chat.VoiceMessageBody;
+import com.easemob.chatuidemo.DemoApplication;
+import com.easemob.chatuidemo.DemoHXSDKHelper;
+import com.easemob.chatuidemo.adapter.ExpressionAdapter;
+import com.easemob.chatuidemo.adapter.ExpressionPagerAdapter;
+import com.easemob.chatuidemo.adapter.MessageAdapter;
+import com.easemob.chatuidemo.adapter.VoicePlayClickListener;
+import com.easemob.chatuidemo.domain.RobotUser;
+import com.easemob.chatuidemo.utils.CommonUtils;
+import com.easemob.chatuidemo.utils.ImageUtils;
+import com.easemob.chatuidemo.utils.SmileUtils;
+import com.easemob.chatuidemo.widget.ExpandGridView;
+import com.easemob.chatuidemo.widget.PasteEditText;
+import com.easemob.exceptions.EaseMobException;
+import com.easemob.util.EMLog;
+import com.easemob.util.PathUtil;
+import com.easemob.util.VoiceRecorder;
+import com.sxit.dreamiya.R;
+
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -64,46 +104,6 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.easemob.EMChatRoomChangeListener;
-import com.easemob.EMError;
-import com.easemob.EMEventListener;
-import com.easemob.EMNotifierEvent;
-import com.easemob.EMValueCallBack;
-import com.easemob.applib.controller.HXSDKHelper;
-import com.easemob.applib.model.GroupRemoveListener;
-import com.easemob.chat.EMChatManager;
-import com.easemob.chat.EMChatRoom;
-import com.easemob.chat.EMContactManager;
-import com.easemob.chat.EMConversation;
-import com.easemob.chat.EMConversation.EMConversationType;
-import com.easemob.chat.EMGroup;
-import com.easemob.chat.EMGroupManager;
-import com.easemob.chat.EMMessage;
-import com.easemob.chat.EMMessage.ChatType;
-import com.easemob.chat.ImageMessageBody;
-import com.easemob.chat.LocationMessageBody;
-import com.easemob.chat.NormalFileMessageBody;
-import com.easemob.chat.TextMessageBody;
-import com.easemob.chat.VideoMessageBody;
-import com.easemob.chat.VoiceMessageBody;
-import com.easemob.chatuidemo.DemoApplication;
-import com.easemob.chatuidemo.DemoHXSDKHelper;
-import com.sxit.dreamiya.R;
-import com.easemob.chatuidemo.adapter.ExpressionAdapter;
-import com.easemob.chatuidemo.adapter.ExpressionPagerAdapter;
-import com.easemob.chatuidemo.adapter.MessageAdapter;
-import com.easemob.chatuidemo.adapter.VoicePlayClickListener;
-import com.easemob.chatuidemo.domain.RobotUser;
-import com.easemob.chatuidemo.utils.CommonUtils;
-import com.easemob.chatuidemo.utils.ImageUtils;
-import com.easemob.chatuidemo.utils.SmileUtils;
-import com.easemob.chatuidemo.widget.ExpandGridView;
-import com.easemob.chatuidemo.widget.PasteEditText;
-import com.easemob.exceptions.EaseMobException;
-import com.easemob.util.EMLog;
-import com.easemob.util.PathUtil;
-import com.easemob.util.VoiceRecorder;
 
 /**
  * 聊天页面
@@ -203,11 +203,24 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 	public EMChatRoom room;
 	public boolean isRobot;
 	
+	String name = "";
+    String toname = "";
+    String pic = "";
+    String topic = "";
+	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_chat);
 		activityInstance = this;
+		
+		Intent intent = this.getIntent();
+        name = intent.getStringExtra("name");
+        toname = intent.getStringExtra("toname");
+        pic = intent.getStringExtra("pic");
+        topic = intent.getStringExtra("topic");
+		
 		initView();
 		setUpView();
 	}
@@ -380,17 +393,21 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 
 		if (chatType == CHATTYPE_SINGLE) { // 单聊
 			toChatUsername = getIntent().getStringExtra("userId");
+            String realname = getIntent().getStringExtra("Realname");
 			Map<String,RobotUser> robotMap=((DemoHXSDKHelper)HXSDKHelper.getInstance()).getRobotList();
 			if(robotMap!=null&&robotMap.containsKey(toChatUsername)){
 				isRobot = true;
 				String nick = robotMap.get(toChatUsername).getNick();
 				if(!TextUtils.isEmpty(nick)){
-					((TextView) findViewById(R.id.name)).setText(nick);
+					((TextView) findViewById(R.id.name)).setText(realname);
+//					((TextView) findViewById(R.id.name)).setText(nick);
 				}else{
-					((TextView) findViewById(R.id.name)).setText(toChatUsername);
+					((TextView) findViewById(R.id.name)).setText(realname);
+//					((TextView) findViewById(R.id.name)).setText(toChatUsername);
 				}
 			}else{
-				((TextView) findViewById(R.id.name)).setText(toChatUsername);
+				((TextView) findViewById(R.id.name)).setText(realname);
+//				((TextView) findViewById(R.id.name)).setText(toChatUsername);
 			}
 		} else {
 			// 群聊
@@ -485,7 +502,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 	}
 	
 	protected void onListViewCreation(){
-        adapter = new MessageAdapter(ChatActivity.this, toChatUsername, chatType);
+        adapter = new MessageAdapter(ChatActivity.this, toChatUsername, chatType, pic, topic, listView);
         // 显示消息
         listView.setAdapter(adapter);
         
@@ -921,6 +938,13 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 			message.addBody(txtBody);
 			// 设置要发给谁,用户username或者群聊groupid
 			message.setReceipt(toChatUsername);
+			
+			//自定义扩展字段
+			message.setAttribute("name", name);
+            message.setAttribute("toname", toname);
+            message.setAttribute("pic", pic);
+            message.setAttribute("topic", topic);
+			
 			// 把messgage加到conversation中
 			conversation.addMessage(message);
 			// 通知adapter有消息变动，adapter会根据加入的这条message显示消息和调用sdk的发送方法
@@ -959,6 +983,13 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 			if(isRobot){
 				message.setAttribute("em_robot_message", true);
 			}
+			
+			//自定义扩展字段
+            message.setAttribute("name", name);
+            message.setAttribute("toname", toname);
+            message.setAttribute("pic", pic);
+            message.setAttribute("topic", topic);
+			
 			conversation.addMessage(message);
 			adapter.refreshSelectLast();
 			setResult(RESULT_OK);
@@ -993,6 +1024,13 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 		if(isRobot){
 			message.setAttribute("em_robot_message", true);
 		}
+		
+		//自定义扩展字段
+        message.setAttribute("name", name);
+        message.setAttribute("toname", toname);
+        message.setAttribute("pic", pic);
+        message.setAttribute("topic", topic);
+		
 		conversation.addMessage(message);
 
 		listView.setAdapter(adapter);
@@ -1024,6 +1062,13 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 			if(isRobot){
 				message.setAttribute("em_robot_message", true);
 			}
+			
+			//自定义扩展字段
+            message.setAttribute("name", name);
+            message.setAttribute("toname", toname);
+            message.setAttribute("pic", pic);
+            message.setAttribute("topic", topic);
+			
 			conversation.addMessage(message);
 			listView.setAdapter(adapter);
 			adapter.refreshSelectLast();
@@ -1093,6 +1138,13 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 		if(isRobot){
 			message.setAttribute("em_robot_message", true);
 		}
+		
+		//自定义扩展字段
+        message.setAttribute("name", name);
+        message.setAttribute("toname", toname);
+        message.setAttribute("pic", pic);
+        message.setAttribute("topic", topic);
+		
 		conversation.addMessage(message);
 		listView.setAdapter(adapter);
 		adapter.refreshSelectLast();
@@ -1151,6 +1203,13 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 		if(isRobot){
 			message.setAttribute("em_robot_message", true);
 		}
+		
+		//自定义扩展字段
+        message.setAttribute("name", name);
+        message.setAttribute("toname", toname);
+        message.setAttribute("pic", pic);
+        message.setAttribute("topic", topic);
+		
 		conversation.addMessage(message);
 		listView.setAdapter(adapter);
 		adapter.refreshSelectLast();
@@ -1196,15 +1255,6 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 	 * @param view
 	 */
 	public void setModeKeyboard(View view) {
-		// mEditTextContent.setOnFocusChangeListener(new OnFocusChangeListener()
-		// {
-		// @Override
-		// public void onFocusChange(View v, boolean hasFocus) {
-		// if(hasFocus){
-		// getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-		// }
-		// }
-		// });
 		edittext_layout.setVisibility(View.VISIBLE);
 		more.setVisibility(View.GONE);
 		view.setVisibility(View.GONE);
